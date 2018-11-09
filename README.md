@@ -55,6 +55,7 @@ You will notice there are less get/set methods included in the view classes than
   - `CommandView` has no UML diagram, it must meet the following parameters:
     - `CommandView` must extend `Pane`, or a subclass thereof.
     - `CommandView` should have 2 `Button` objects, one to start the game and one to exit.
+    - The two buttons should be accessible from outside this class, but should be immutable.
 
 - GameView
   - `GameView` will be the root pane for this program, and also has no UML. `GameView` must meet the following paramters:
