@@ -45,17 +45,43 @@ You will notice there are less get/set methods included in the view classes than
 ### Level 2 - Complete the game UI
 #### 10 points
 
+- StatusView
+  - `StatusView` has no assigned UML diagram, you may choose to design it as you wish, given the following parameters:
+    - `StatusView` must display the active player's name, the current score, the game's high score, and the current level.
+    - `StatusView` must extend `Pane`, or a subclass thereof.
+    - `StatusView` must have one or more methods that allows the user to update the displayed data.
+
+- CommandView
+  - `CommandView` has no UML diagram, it must meet the following parameters:
+    - `CommandView` must extend `Pane`, or a subclass thereof.
+    - `CommandView` should have 2 `Button` objects, one to start the game and one to exit.
+
+- GameView
+  - `GameView` will be the root pane for this program, and also has no UML. `GameView` must meet the following paramters:
+    - `GameView` should be large enough to fully display the largest level and controls.
+    - `GameView` must include a `StatusView` and a `CommandView`, and will display the `PlayAreaView` when the final version of that class is released (there will be a BlackBoard announcement).
+
 ### Level 3 - Load the first level
 #### 5 points
+
+TBA
 
 ### Level 4 - Walking into walls
 #### 15 points
 
+TBA
+
 ### Level 5 - Jumping and climbing
 #### 20 points
+
+TBA
 
 ### Level 6 - Bad guys and barrels
 #### 20 points
 
+TBA
+
 ### Level 7 - Level up!
 #### 20 points
+
+TBA
