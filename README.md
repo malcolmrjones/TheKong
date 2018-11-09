@@ -14,7 +14,7 @@ All submissions for MP3 **MUST** be submitted using GitHub Pull Requests. Assign
 
 ### Introduction
 
-Finally, this semester's project is all coming together! Included in this repository is a NetBeans project called _TheKong_. You should add your code to this project, DO NOT create your own NetBeans project. There will be more classes added after the project is assigned, check BlackBoard for more information.
+Finally, this semester's project is all coming together! Included in this repository is a NetBeans project called _TheKong_. You should add your code to this project, DO NOT create your own NetBeans project. There will be more classes added after the project is assigned, check BlackBoard periodically for updates.
 
 ### Getters/Setters
 
