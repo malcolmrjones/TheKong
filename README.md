@@ -2,7 +2,7 @@
 
 ## COMP 167 Major Programming Assignment 3
 
-## Due: TBA
+## Due: 2018-11-26 11:59 pm
 
 **READ THESE INSTRUCTIONS THOROUGHLY BEFORE STARTING THE PROJECT**
 
