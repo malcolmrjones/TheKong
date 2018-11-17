@@ -2,6 +2,7 @@ package thekongcontroller;
 
 import thekongmodel.PlayerProfile;
 import thekongmodel.PlayerProfileCollection;
+import thekongview.LoginView;
 
 
 public class LoginController {
@@ -9,11 +10,12 @@ public class LoginController {
     private PlayerProfileCollection profiles;
     
     public LoginController(PlayerProfileCollection profiles) {
-        
+        this.profiles = profiles;
     }
     
     public PlayerProfile getLoginProfile() {
-        return null;
+       
+        
     }
     
     private void showLoginErrorAndExit() {
