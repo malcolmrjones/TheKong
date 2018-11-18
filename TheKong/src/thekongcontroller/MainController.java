@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import thekongmodel.LevelCollection;
 import thekongmodel.PlayerProfileCollection;
 import thekongmodel.SpriteDataCollection;
+import thekongview.GameView;
 
 
 public class MainController extends Application {
@@ -34,12 +35,9 @@ public class MainController extends Application {
         
        
         
-        Label playername = new Label(playerSelected);
+        GameView root = new GameView();
         
-        StackPane root = new StackPane();
-        root.getChildren().add(playername);
-        
-        Scene scene = new Scene(root, 100, 100);
+        Scene scene = new Scene(root, 800, 600);
         
         primaryStage.setScene(scene);
         primaryStage.setTitle("Kong - Malcolm R. Jones");

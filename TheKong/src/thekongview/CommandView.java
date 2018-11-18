@@ -12,11 +12,11 @@ public class CommandView extends HBox {
     
     public CommandView() {
         btnStart = new Button("START");
-        btnStart = new Button("EXIT");
+        btnExit = new Button("EXIT");
         
         this.getChildren().addAll(btnStart, btnExit);
         this.setAlignment(Pos.CENTER);
-        this.setSpacing(10);
+        this.setSpacing(10.0);
     }
     
     public Button getStartButton() {
