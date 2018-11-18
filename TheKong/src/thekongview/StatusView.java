@@ -1,5 +1,6 @@
 package thekongview;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -19,6 +20,7 @@ public class StatusView extends HBox {
         lblLevel = new Label("LEVEL: " + level);
         
         this.getChildren().addAll(lblCurrentPlayerName, lblCurrentScore, lblHighScore, lblLevel);
+        this.setAlignment(Pos.CENTER);
     }
     
     public void setCurrentPlayerName(String currentplayername) {
