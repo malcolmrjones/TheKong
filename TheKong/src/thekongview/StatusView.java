@@ -3,7 +3,11 @@ package thekongview;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 
 public class StatusView extends HBox {
@@ -23,6 +27,8 @@ public class StatusView extends HBox {
         this.getChildren().addAll(lblCurrentPlayerName, lblCurrentScore, lblHighScore, lblLevel);
         this.setAlignment(Pos.CENTER);
         this.setSpacing(10.0);
+        this.setPadding(new Insets(15, 15, 15, 15));
+        this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     
     public void setCurrentPlayerName(String currentplayername) {
