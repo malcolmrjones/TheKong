@@ -63,26 +63,77 @@ You will notice there are less get/set methods included in the view classes than
     - `GameView` must include a `StatusView` and a `CommandView`, and will display the `PlayAreaView` when the final version of that class is released (there will be a BlackBoard announcement).
 
 ### Level 3 - Load the first level
-#### 5 points
+#### 10 points
 
-TBA
+For this level, you will be working mostly in `MainController.java`. You must instantiate a `GamePane`, `LevelView`, a `PlayAreaView`, `StatusView`, and a `CommandView`.
+
+- PlayAreaView
+  - The `PlayAreaView` will be made up of the Sprites and the `LevelView`
+  - LevelView
+    - The `LevelView` should display all of the ladders and platforms described in the Object configuration file for the first level.
+  - Sprites
+    - You should add a `HeroView`, `PrincessView`, and `KongView` to the `PlayAreaView` at the locations specified in the Sprite config file.
+  - The `PlayAreaView` should be in the center region of the `GamePane`.
+- StatusView
+  - Declare and instantiate a `StatusView`, this should appear at the top of the `GamePane`.
+- CommandView
+  - Declare and instantiate a `CommandView`, this should appear at the bottom of the `GamePane`.
+
 
 ### Level 4 - Walking into walls
-#### 15 points
+#### 20 points
 
-TBA
+Animation is an important part of game development. Create a class called `AnimationController` that extends `AnimationTimer`. The `AnimationController` constructor should take one argument, the `PlayAreaView`. In your `handle()` method, you should call `moveSprites()`.
+
+In your `MainController` class, you should handle Keyboard events. If a right arrow is pressed, the `HeroView` should have a direction of `0.0` and have a speed that makes it move reasonably across the scene. If the left arrow is pressed, the `HeroView` should have a direction of `180.0`. When these arrows are released, the speed should be set back to `0.0`.
+
+Finally, you must check for collisions in the `AnimationController.handle()` method. If the `HeroView` hits either end of the play area, you should stop it so it stays in view.
 
 ### Level 5 - Jumping and climbing
 #### 20 points
 
-TBA
+In order to implement jumping and climbing, your `AnimationController` must _first_ know if your hero is on a ladder (this is another collision that should be checked in `handle()`). If the hero is on a ladder, then pressing the up arrow should set the direction to `270.0` and the same speed as walking left and right. If the hero is on a ladder and the down arrow is pressed, set the direction to `90.0` and set the speed.
+
+Next, you should implement gravity for your hero. If the hero is not on a ladder and not on a floor (guess what? another collision!), then you should increment the hero's y position by a number (I used 6). This will make the hero fall until he reaches a platform or the floor.
+
+Finally, let's make the hero jump! If the hero _is not on a ladder_ and the up arrow is pressed, then for the next 6 times the handle method is called, move the hero UP (which is decrementing the Y position) by TWICE the value of gravity, so I used 12.
 
 ### Level 6 - Bad guys and barrels
 #### 20 points
 
-TBA
+The Kong doesn't need to move for this level, just make sure it is in the `PlayAreaView` at the given starting position.
 
-### Level 7 - Level up!
-#### 20 points
+At a random interval (somewhere between 30 and 80 calls of the `handle()` method), a barrel should appear at the given default barrel starting position. The barrel should also be affected by gravity, like the hero is. Additionally, it should move to the right at a speed of about 12 until it hits the right wall (collision!) and then it should move to the left until it hits the left wall of the PlayArea (collision again!). This should continue until the barrel reaches the bottom, where it should disappear.
 
-TBA
+If the hero collides with a barrel, show a message informing the user that they have lost, and quit the game.
+
+### Level 7 - Pacing princess and winning
+#### 10 points
+
+Princesses don't like being held hostage, go figure. Make the princess pace on the top platform. She should move to one side of the platform, pause for a reasonable amount of time, and then move to the other side. This should continue for the whole game.
+
+If the hero reaches the princess's platform without being struck by a barrel, the user wins! Display a message that the user has won, and then quit the game.
+
+### Extra Credit Opportunities
+
+There are several opportunities for extra credit on this lab. Each of them must be completed on a separate branch, and that branch must include the option number to be graded. Each extra credit option is worth 10 points, each student may earn up to 30 points extra credit on this program.
+
+#### Option 1 - Animate the Hero
+
+When the hero moves, change the ViewPort as appropriate to make it look like the hero is walking and climbing in the direction he is moving.
+
+#### Option 2 - Animate any other Sprite
+
+Animate any other sprite using the ViewPort to make it look like it is moving.
+
+#### Option 3 - Keep score
+
+Develop a scoring algorithm, and make the score in the `StatusView` update as needed. The details of the scoring algorithm are up to you. It would be wise to explain the algorithm in a comment, or in the pull request.
+
+#### Option 4 - Add additional levels
+
+Add the data for additional levels to the ObjectConfig.txt file. When the hero reaches the princess's platform, have the next level show up.
+
+#### Option 5 - Make the command pane functional
+
+Make the "Start" button on the `CommandView` start the animation timer. Additionally, have the "end" button exit the game.
