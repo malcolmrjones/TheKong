@@ -13,21 +13,17 @@ public class GameView extends BorderPane {
     
     private StatusView statusview;
     private CommandView commandview;
-    //private PlayAreaView playareaview;
+    private PlayAreaView playareaview;
     
-    public GameView() {
+    public GameView(StatusView statusview, CommandView commandview, PlayAreaView playareaview) {
         
-        //playareaview = new PlayAreaView();
-        //this.setCenter(playareaview);
+        this.playareaview = playareaview;
+        this.setCenter(this.playareaview);
         
-        statusview = new StatusView("PLAYERNAME", 100, 200, 1);     
-        commandview = new CommandView();
-        VBox vboxBottom = new VBox();
-        vboxBottom.getChildren().addAll(statusview, commandview);
-        vboxBottom.setSpacing(10);
-        vboxBottom.setPadding(new Insets(5, 10, 10, 10));
-        vboxBottom.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.statusview = statusview;   
+        this.commandview = commandview;
         
-        this.setBottom(vboxBottom);
+        this.setTop(this.statusview);
+        this.setBottom(this.commandview);
     }
 }

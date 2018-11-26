@@ -1,5 +1,6 @@
 package thekongcontroller;
 
+import com.sun.javafx.css.Combinator;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,7 +9,10 @@ import javafx.stage.Stage;
 import thekongmodel.LevelCollection;
 import thekongmodel.PlayerProfileCollection;
 import thekongmodel.SpriteDataCollection;
+import thekongview.CommandView;
 import thekongview.GameView;
+import thekongview.PlayAreaView;
+import thekongview.StatusView;
 
 
 public class MainController extends Application {
@@ -33,9 +37,13 @@ public class MainController extends Application {
         String playerSelected = logincontroller.getLoginProfile().getPlayerName();
         savePlayerData();
         
-       
         
-        GameView root = new GameView();
+        
+        PlayAreaView playareaview = new PlayAreaView(spriteCollection, levelCollection.getLevel(0));
+        StatusView statusview = new StatusView(playerSelected, 0, 0, 1);
+        CommandView commandview = new CommandView();
+        
+        GameView root = new GameView(statusview, commandview, playareaview);
         
         Scene scene = new Scene(root, 800, 600);
         
