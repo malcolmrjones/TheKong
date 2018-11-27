@@ -45,7 +45,7 @@ public class MainController extends Application {
         
         GameView root = new GameView(statusview, commandview, playareaview);
         
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root);
         
         primaryStage.setScene(scene);
         primaryStage.setTitle("Kong - Malcolm R. Jones");
