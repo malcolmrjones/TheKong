@@ -25,5 +25,6 @@ public class GameView extends BorderPane {
         
         this.setTop(this.statusview);
         this.setBottom(this.commandview);
+       
     }
 }

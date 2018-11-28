@@ -2,8 +2,11 @@ package thekongcontroller;
 
 import com.sun.javafx.css.Combinator;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import thekongmodel.LevelCollection;
@@ -38,10 +41,14 @@ public class MainController extends Application {
         savePlayerData();
         
         
-        
         PlayAreaView playareaview = new PlayAreaView(spriteCollection, levelCollection.getLevel(0));
         StatusView statusview = new StatusView(playerSelected, 0, 0, 1);
         CommandView commandview = new CommandView();
+        
+        AnimationController animate = new AnimationController(playareaview);
+        animate.start();
+
+
         
         GameView root = new GameView(statusview, commandview, playareaview);
         
@@ -50,6 +57,42 @@ public class MainController extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Kong - Malcolm R. Jones");
         primaryStage.show();
+        
+        
+        
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            
+            private final double playerSpeed = 3.0;
+            
+            @Override
+            public void handle(KeyEvent event) {
+                
+                if(event.getCode() == KeyCode.RIGHT) {
+                    playareaview.getHero().setDirection(0.0);
+                    playareaview.getHero().setSpeed(playerSpeed);
+                }
+                if(event.getCode() == KeyCode.LEFT) {
+                    playareaview.getHero().setDirection(180.0);
+                    playareaview.getHero().setSpeed(playerSpeed);
+                }
+                
+            }
+        });
+        
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            
+            @Override
+            public void handle(KeyEvent event) {
+                
+                if(event.getCode() == KeyCode.RIGHT) {
+                    playareaview.getHero().setSpeed(0.0);
+                }
+                if(event.getCode() == KeyCode.LEFT) {
+                    playareaview.getHero().setSpeed(0.0);
+                }
+                
+            }
+        });
         
         
     }

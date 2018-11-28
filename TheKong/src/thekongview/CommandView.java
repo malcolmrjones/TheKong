@@ -19,6 +19,9 @@ public class CommandView extends HBox {
         btnStart = new Button("START");
         btnExit = new Button("EXIT");
         
+        btnStart.setFocusTraversable(false);
+        btnExit.setFocusTraversable(false);
+        
         this.getChildren().addAll(btnStart, btnExit);
         this.setAlignment(Pos.CENTER);
         this.setSpacing(10.0);
