@@ -14,7 +14,7 @@ import thekongmodel.LadderData;
  *
  * @author CCannon
  */
-public class LadderView extends Rectangle{
+public class LadderView extends Rectangle {
     
     private LadderData ladderData;
     

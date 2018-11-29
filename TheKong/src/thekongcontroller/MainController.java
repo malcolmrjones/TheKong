@@ -14,6 +14,9 @@ import thekongmodel.PlayerProfileCollection;
 import thekongmodel.SpriteDataCollection;
 import thekongview.CommandView;
 import thekongview.GameView;
+import thekongview.HeroView;
+import thekongview.LadderView;
+import thekongview.PlatformView;
 import thekongview.PlayAreaView;
 import thekongview.StatusView;
 
@@ -27,7 +30,6 @@ public class MainController extends Application {
     private PlayerProfileCollection playerCollection;
     private SpriteDataCollection spriteCollection;
     private LevelCollection levelCollection;
-    //private PlayAreaView playAreaView;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -62,33 +64,58 @@ public class MainController extends Application {
         
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             
-            private final double playerSpeed = 3.0;
-            
             @Override
             public void handle(KeyEvent event) {
                 
+                HeroView hero = playareaview.getHero();
+                
                 if(event.getCode() == KeyCode.RIGHT) {
-                    playareaview.getHero().setDirection(0.0);
-                    playareaview.getHero().setSpeed(playerSpeed);
+                    hero.setDirection(0.0);
+                    hero.setSpeed(animate.playerSpeed);
                 }
                 if(event.getCode() == KeyCode.LEFT) {
-                    playareaview.getHero().setDirection(180.0);
-                    playareaview.getHero().setSpeed(playerSpeed);
+                    hero.setDirection(180.0);
+                    hero.setSpeed(animate.playerSpeed);
                 }
                 
+                if(event.getCode() == KeyCode.UP) {
+                   
+                    if(animate.isHeroOnLadder(playareaview)) {
+                        hero.setDirection(270);
+                    }
+                    
+                    if(animate.isHeroOnFloor(playareaview) || animate.isHeroOnPlatform(playareaview)) {
+                        animate.isHeroJump = true;
+                    }
+                }
+                
+                if(event.getCode() == KeyCode.DOWN) {
+                    if(animate.isHeroOnLadder(playareaview)) {
+                        hero.setDirection(90);
+                    }
+                }
+               
             }
         });
         
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            HeroView hero = playareaview.getHero();
             
             @Override
             public void handle(KeyEvent event) {
                 
                 if(event.getCode() == KeyCode.RIGHT) {
-                    playareaview.getHero().setSpeed(0.0);
+                   hero.setSpeed(0.0);
                 }
                 if(event.getCode() == KeyCode.LEFT) {
-                    playareaview.getHero().setSpeed(0.0);
+                    hero.setSpeed(0.0);
+                }
+                
+                if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
+                    if(animate.isHeroOnLadder(playareaview)) {
+                        hero.setSpeed(0);
+                    }
                 }
                 
             }
@@ -96,6 +123,7 @@ public class MainController extends Application {
         
         
     }
+  
     
     public static void main(String[] args) {
         playerProfileConfigFileName = args[0];
