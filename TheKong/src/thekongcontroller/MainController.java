@@ -83,10 +83,11 @@ public class MainController extends Application {
                     if(animate.isHeroOnLadder(playareaview)) {
                         hero.setDirection(270);
                     }
-                    
+
                     if(animate.isHeroOnFloor(playareaview) || animate.isHeroOnPlatform(playareaview)) {
-                        animate.isHeroJump = true;
+                            animate.isHeroJump = true;
                     }
+                    
                 }
                 
                 if(event.getCode() == KeyCode.DOWN) {
@@ -112,11 +113,6 @@ public class MainController extends Application {
                     hero.setSpeed(0.0);
                 }
                 
-                if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
-                    if(animate.isHeroOnLadder(playareaview)) {
-                        hero.setSpeed(0);
-                    }
-                }
                 
             }
         });

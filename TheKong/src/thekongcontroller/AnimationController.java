@@ -14,7 +14,7 @@ import thekongview.PlayAreaView;
 public class AnimationController extends AnimationTimer {
     
     private PlayAreaView playareaview;
-    public final double playerSpeed = 3.0;
+    public final double playerSpeed = 4.0;
     public final double GRAVITY = 4;
     public boolean isHeroJump;
     private int frameCount;
@@ -27,9 +27,8 @@ public class AnimationController extends AnimationTimer {
     
     @Override
     public void handle(long now) {
-       
-        boolean heroIsOnLadder = isHeroOnLadder(playareaview);
-       
+        
+        
         
         handleHeroOutOfBounds();
         handleGravity();
@@ -82,8 +81,10 @@ public class AnimationController extends AnimationTimer {
 
 
             if(HERO_BOTTOM >= PLATFORM_TOP && HERO_BOTTOM <= PLATFORM_BOTTOM &&
-                    hero.getBoundsInLocal().intersects(platform.getBoundsInLocal())) {
-                hero.setY(PLATFORM_TOP - hero.getBoundsInLocal().getHeight());
+                hero.getBoundsInLocal().intersects(platform.getBoundsInLocal())) {
+                
+                    hero.setY(PLATFORM_TOP - hero.getBoundsInLocal().getHeight());
+
             } 
             
             if(HERO_TOP >= PLATFORM_TOP && !isHeroOnLadder(playareaview) &&
