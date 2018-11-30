@@ -22,7 +22,7 @@ public class AnimationController extends AnimationTimer {
     private PlayAreaView playareaview;
     private HeroView hero;
     public final double PLAYER_SPEED = 3;
-    public final double BARREL_SPEED = 3;
+    public final double BARREL_SPEED = 1.5;
     public final double GRAVITY = 4;
     public boolean isHeroJump;
     public long frameCount;
@@ -143,7 +143,7 @@ public class AnimationController extends AnimationTimer {
         
         //Random (int)(Math.random() * (60 - 30) + 30)
         /* CREATE NEW BARRELS */
-        if((frameCount - barrelStartFrame) > 100) {
+        if((frameCount - barrelStartFrame) > (int)(Math.random() * (250 - 75) + 75)) {
            
             BarrelView barrel = new BarrelView(playareaview.getBarrelData());
             barrel.setDirection(0);
@@ -223,6 +223,11 @@ public class AnimationController extends AnimationTimer {
             
         }
     }
+    
+    
+    
+    
+    
     
     public boolean isHeroOnLadder(PlayAreaView playareaview) {
 
