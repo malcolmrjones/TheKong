@@ -32,8 +32,6 @@ public class MainController extends Application {
         String playerSelected = logincontroller.getLoginProfile().getPlayerName();
         savePlayerData();
         
-       
-        
         Label playername = new Label(playerSelected);
         
         StackPane root = new StackPane();
@@ -42,7 +40,8 @@ public class MainController extends Application {
         Scene scene = new Scene(root, 100, 100);
         
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Kong - Malcolm R. Jones");
+        primaryStage.setTitle("Kong - Malcolm R. Jones");                                                                                          
+                 
         primaryStage.show();
         
         
