@@ -40,6 +40,7 @@ public class AnimationController extends AnimationTimer {
         handleLadderClimb();
         handleJump();
         
+        
         playareaview.moveSprites();
         
     }
@@ -57,6 +58,29 @@ public class AnimationController extends AnimationTimer {
         if(hero.getCenterX() + hero.getBoundingRadius() > playareaview.getWidth()) {
             hero.setX(playareaview.getWidth() - hero.getBoundingRadius() * 2);
         }
+    }
+    
+    private void handleGravity() {
+        if(!isHeroOnLadder(playareaview) && 
+            !isHeroOnFloor(playareaview) &&
+            !isHeroOnPlatform(playareaview)) {
+            hero.setY(hero.getY() + GRAVITY);
+        }
+    }
+    
+    private void handleLadderClimb() {
+        if(hero.getDirection() == 270 || hero.getDirection() == 90 ) {
+            
+            if(isHeroOnLadder(playareaview)) {
+               hero.setSpeed(PLAYER_SPEED);
+            }
+            else {
+                hero.setSpeed(0);
+                hero.setDirection(0);
+            }
+            
+        }
+        
     }
     
     private void handleHeroBelowPlatform() {
@@ -85,14 +109,6 @@ public class AnimationController extends AnimationTimer {
         }
     }
     
-    private void handleGravity() {
-        if(!isHeroOnLadder(playareaview) && 
-            !isHeroOnFloor(playareaview) &&
-            !isHeroOnPlatform(playareaview)) {
-            hero.setY(hero.getY() + GRAVITY);
-        }
-    }
-    
     private void handleJump() {
 
         if(isHeroJump) {
@@ -110,21 +126,7 @@ public class AnimationController extends AnimationTimer {
         
     }
     
-    private void handleLadderClimb() {
-        if(hero.getDirection() == 270 || hero.getDirection() == 90 ) {
-            
-            if(isHeroOnLadder(playareaview)) {
-               hero.setSpeed(PLAYER_SPEED);
-            }
-            else {
-                hero.setSpeed(0);
-                hero.setDirection(0);
-            }
-            
-        }
-        
-    }
-    
+   
     
     
     
