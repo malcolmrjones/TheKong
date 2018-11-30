@@ -14,37 +14,43 @@ import thekongview.PlayAreaView;
 public class AnimationController extends AnimationTimer {
     
     private PlayAreaView playareaview;
-    public final double playerSpeed = 4.0;
+    private HeroView hero;
+    public final double PLAYER_SPEED = 3.0;
     public final double GRAVITY = 4;
     public boolean isHeroJump;
     private int frameCount;
     
+    
+    
     public AnimationController(PlayAreaView playareaview) {
         this.playareaview = playareaview;
+        this.hero = playareaview.getHero();
         this.isHeroJump = false;
         this.frameCount = 0;
     }
     
+    
+    
     @Override
     public void handle(long now) {
         
-        
-        
         handleHeroOutOfBounds();
         handleGravity();
-        handleJump();
-        handleHeroHitsFloor();
-        handleHeroOnPlatform();
+        handleHeroOnFloor();
+        handleHeroBelowPlatform();
         handleLadderClimb();
-      
+        handleJump();
         
         playareaview.moveSprites();
         
     }
     
+    
+    
+    
+    
+    
     private void handleHeroOutOfBounds() {
-        HeroView hero = playareaview.getHero();
-        
         if(hero.getCenterX() - hero.getBoundingRadius() < 0) {
             hero.setX(0);
         }
@@ -54,63 +60,50 @@ public class AnimationController extends AnimationTimer {
         }
     }
     
-    private void handleHeroHitsFloor() {
-        
-        HeroView hero = playareaview.getHero();
-        
+    private void handleHeroOnFloor() {
         if(isHeroOnFloor(playareaview)) {
-            hero.setY(playareaview.getHeight() - hero.getBoundsInLocal().getHeight());
+            hero.setY(playareaview.getHeight() - hero.getBoundingRadius()*2);
         }
         
      }
-   
-    private void handleHeroOnPlatform() {
-        
-        HeroView hero = playareaview.getHero();
+    
+    private void handleHeroBelowPlatform() {
         PlatformView platform;
-        Bounds herobounds = hero.getBoundsInLocal();
-        double HERO_TOP = herobounds.getMinY();
-        double HERO_BOTTOM = herobounds.getMinY() + herobounds.getHeight();
+        double playerboundingdiameter = hero.getBoundingRadius()*2;
         
-
+        
         for(int i = 0; i < playareaview.getLevelView().getNumPlatforms(); i++) {
-
-            platform = playareaview.getLevelView().getPlatformView(i);
-            double PLATFORM_TOP = platform.getBoundsInLocal().getMinY();
-            double PLATFORM_BOTTOM = platform.getBoundsInLocal().getMinY() + platform.getBoundsInLocal().getHeight();
-
-
-            if(HERO_BOTTOM >= PLATFORM_TOP && HERO_BOTTOM <= PLATFORM_BOTTOM &&
-                hero.getBoundsInLocal().intersects(platform.getBoundsInLocal())) {
-                
-                    hero.setY(PLATFORM_TOP - hero.getBoundsInLocal().getHeight());
-
-            } 
             
-            if(HERO_TOP >= PLATFORM_TOP && !isHeroOnLadder(playareaview) &&
-                    hero.getBoundsInLocal().intersects(platform.getBoundsInLocal())) {
-                hero.setY(PLATFORM_BOTTOM + 1);
+            platform = playareaview.getLevelView().getPlatformView(i);
+
+            if(hero.getY()+playerboundingdiameter >= platform.getY() + playerboundingdiameter &&
+                hero.getY()+playerboundingdiameter <= platform.getY()+platform.getHeight() + playerboundingdiameter) {
+                
+                if(hero.getX() > platform.getX() && hero.getX() < platform.getX()+platform.getWidth() ||
+                    hero.getX()+playerboundingdiameter > platform.getX() && hero.getX()+playerboundingdiameter < platform.getX()+platform.getWidth()) {
+                    
+                    if(!isHeroOnLadder(playareaview)) {
+                        hero.setY(platform.getY()+platform.getHeight()+1);
+                    }
+                    
+                }
+               
             }
-
+            
         }
-
-        
     }
     
     private void handleGravity() {
-        
-        HeroView hero = playareaview.getHero();
-        
-        if(!isHeroOnLadder(playareaview) && !isHeroOnFloor(playareaview)) {
+        if(!isHeroOnLadder(playareaview) && 
+            !isHeroOnFloor(playareaview) &&
+            !isHeroOnPlatform(playareaview)) {
             hero.setY(hero.getY() + GRAVITY);
         }
     }
     
     private void handleJump() {
-        
-        HeroView hero = playareaview.getHero();
-        
-        if(isHeroJump && !isHeroOnLadder(playareaview)) {
+
+        if(isHeroJump) {
             if(frameCount < 10) {
                 hero.setY(hero.getY() - GRAVITY * 2.5);
             }
@@ -123,51 +116,46 @@ public class AnimationController extends AnimationTimer {
         
         
         
-        
     }
     
     private void handleLadderClimb() {
-        
-        HeroView hero = playareaview.getHero();
-        
         if(hero.getDirection() == 270 || hero.getDirection() == 90 ) {
-                if(isHeroOnLadder(playareaview)) {
-                    hero.setSpeed(playerSpeed);
-                }
-                else {
-                    hero.setSpeed(0);
-                    hero.setDirection(0);
-                }
+            
+            if(isHeroOnLadder(playareaview)) {
+               hero.setSpeed(PLAYER_SPEED);
+            }
+            else {
+                hero.setSpeed(0);
+                hero.setDirection(0);
+            }
+            
         }
         
     }
     
+    
+    
+    
+    
+    
     public boolean isHeroOnLadder(PlayAreaView playareaview) {
-        
-        HeroView hero = playareaview.getHero();
+
         LadderView ladder;
-        boolean isHeroOnLadder = false;
-        
+  
         for(int i = 0; i < playareaview.getLevelView().getNumLadders(); i++) {
-            
             ladder = playareaview.getLevelView().getLadder(i);
             
-            isHeroOnLadder = hero.getBoundsInLocal().intersects(ladder.getBoundsInLocal());
-            
-            if(isHeroOnLadder) {
-                break;
+            if(hero.getBoundsInLocal().intersects(ladder.getBoundsInLocal())) {
+                return true;
             }
         }
         
-        return isHeroOnLadder;
+        return false;
     }
     
     public boolean isHeroOnFloor(PlayAreaView playareaview) {
-        HeroView hero = playareaview.getHero();
-        Bounds herobounds = hero.getBoundsInLocal();
-        double HERO_BOTTOM = herobounds.getMinY() + herobounds.getHeight();
-  
-        if( HERO_BOTTOM >= playareaview.getHeight()) {
+        
+        if( hero.getY() + hero.getBoundingRadius()*2 >= playareaview.getHeight()) {
             return true;
         }
         
@@ -175,22 +163,23 @@ public class AnimationController extends AnimationTimer {
     }
     
     public boolean isHeroOnPlatform(PlayAreaView playareaview) {
-        
-        HeroView hero = playareaview.getHero();
+
         PlatformView platform;
-        Bounds herobounds = hero.getBoundsInLocal();
-        double HERO_BOTTOM = herobounds.getMinY() + herobounds.getHeight();
+        double playerboundingdiameter = hero.getBoundingRadius()*2;
+        
         
         for(int i = 0; i < playareaview.getLevelView().getNumPlatforms(); i++) {
             
             platform = playareaview.getLevelView().getPlatformView(i);
-            double PLATFORM_TOP = platform.getBoundsInLocal().getMinY();
-            double PLATFORM_BOTTOM = platform.getBoundsInLocal().getMinY() + platform.getBoundsInLocal().getHeight();
-            
-            if(HERO_BOTTOM >= PLATFORM_TOP && HERO_BOTTOM <= PLATFORM_BOTTOM &&
-                    hero.getBoundsInLocal().intersects(platform.getBoundsInLocal())) {
+
+            if(hero.getY() >= platform.getY() - playerboundingdiameter &&
+                hero.getY() <= platform.getY()+platform.getHeight() - playerboundingdiameter) {
+                
+                if(hero.getX() > platform.getX() && hero.getX() < platform.getX()+platform.getWidth() ||
+                    hero.getX()+playerboundingdiameter > platform.getX() && hero.getX()+playerboundingdiameter < platform.getX()+platform.getWidth())
+                
                 return true;
-            } 
+            }
             
         }
         

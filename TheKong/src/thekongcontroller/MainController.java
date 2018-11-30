@@ -71,11 +71,11 @@ public class MainController extends Application {
                 
                 if(event.getCode() == KeyCode.RIGHT) {
                     hero.setDirection(0.0);
-                    hero.setSpeed(animate.playerSpeed);
+                    hero.setSpeed(animate.PLAYER_SPEED);
                 }
                 if(event.getCode() == KeyCode.LEFT) {
                     hero.setDirection(180.0);
-                    hero.setSpeed(animate.playerSpeed);
+                    hero.setSpeed(animate.PLAYER_SPEED);
                 }
                 
                 if(event.getCode() == KeyCode.UP) {
@@ -84,7 +84,8 @@ public class MainController extends Application {
                         hero.setDirection(270);
                     }
 
-                    if(animate.isHeroOnFloor(playareaview) || animate.isHeroOnPlatform(playareaview)) {
+                    if((animate.isHeroOnFloor(playareaview) || animate.isHeroOnPlatform(playareaview)) &&
+                            !animate.isHeroOnLadder(playareaview)) {
                             animate.isHeroJump = true;
                     }
                     
