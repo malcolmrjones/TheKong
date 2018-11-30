@@ -1,10 +1,16 @@
 package thekongcontroller;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.paint.Color;
 import sun.tools.jconsole.inspector.XDataViewer;
+import thekongmodel.BarrelData;
+import thekongview.BarrelView;
 import thekongview.HeroView;
 import thekongview.LadderView;
 import thekongview.PlatformView;
@@ -15,11 +21,13 @@ public class AnimationController extends AnimationTimer {
     
     private PlayAreaView playareaview;
     private HeroView hero;
-    public final double PLAYER_SPEED = 3.0;
+    public final double PLAYER_SPEED = 3;
+    public final double BARREL_SPEED = 3;
     public final double GRAVITY = 4;
     public boolean isHeroJump;
     public long frameCount;
     public long jumpStartFrame;
+    public long barrelStartFrame;
     
     
     
@@ -28,6 +36,7 @@ public class AnimationController extends AnimationTimer {
         this.hero = playareaview.getHero();
         this.isHeroJump = false;
         this.frameCount = 0;
+        this.barrelStartFrame = 0;
     }
     
     
@@ -41,6 +50,7 @@ public class AnimationController extends AnimationTimer {
         handleHeroBelowPlatform();
         handleLadderClimb();
         handleJump();
+        handleBarrels();
         
         playareaview.moveSprites();
         frameCount += 1;
@@ -129,10 +139,90 @@ public class AnimationController extends AnimationTimer {
         
     }
     
+    private void handleBarrels() {
+        
+        //Random (int)(Math.random() * (60 - 30) + 30)
+        /* CREATE NEW BARRELS */
+        if((frameCount - barrelStartFrame) > 100) {
+           
+            BarrelView barrel = new BarrelView(playareaview.getBarrelData());
+            barrel.setDirection(0);
+            barrel.setSpeed(BARREL_SPEED);
+            
+            playareaview.addBarrel(barrel);
+           
+            barrelStartFrame = frameCount;
+        }
+        
+        for(int i = 0; i < playareaview.getNumBarrels(); i++) {
+            
+            BarrelView barrel = playareaview.getBarrel(i);
+            
+            handleBarrelOutOfBounds(barrel);
+            handleBarrelGravity(barrel);
+            handleBarrelHitsHero(barrel);
+            handleBarrelOnFloor(barrel);
+            
+            
+        }
+        
+        
+    }
     
+    private void handleBarrelOutOfBounds(BarrelView barrel) {
+        
+        if(barrel.getCenterX() - barrel.getBoundingRadius() < 0) {
+            barrel.setDirection(0);
+        }
+
+        if(barrel.getCenterX() + barrel.getBoundingRadius() > playareaview.getWidth()) {
+            barrel.setDirection(180);
+        }
+        
+    }
     
+    private void handleBarrelGravity(BarrelView barrel) {
+        if(!isBarrelOnPlatform(barrel) && !isBarrelOnFloor(barrel)) {
+            barrel.setY(barrel.getY() + GRAVITY);
+        }
+    }
     
+    private void handleBarrelOnFloor(BarrelView barrel) {
+        
+        int indexOfBarrel = 0;
+        
+        for(int i = 0; i < playareaview.getNumBarrels(); i++) {
+            if(playareaview.getBarrel(i) == barrel) {
+                indexOfBarrel = i;
+                break;
+            }
+        }
+        
+        if(isBarrelOnFloor(barrel)) {
+            if(barrel.getCenterX() - barrel.getBoundingRadius() < 0) {
+                playareaview.deleteBarrel(indexOfBarrel);
+            }
+        }
+    }
     
+    private void handleBarrelHitsHero(BarrelView barrel) {
+        if(barrel.getBoundsInLocal().intersects(hero.getBoundsInLocal())) {
+            this.stop();
+            Alert gameover = new Alert(AlertType.INFORMATION);
+            gameover.setTitle("GAME OVER");
+            gameover.setHeaderText(null);
+            gameover.setContentText("A BARREL HIT YOU, YOU LOST");
+            gameover.setOnHidden(new EventHandler<DialogEvent>() { 
+                @Override
+                public void handle(DialogEvent event) {
+                    System.exit(0);
+                }
+        
+            });
+            gameover.show();
+            
+        }
+    }
     
     public boolean isHeroOnLadder(PlayAreaView playareaview) {
 
@@ -182,8 +272,35 @@ public class AnimationController extends AnimationTimer {
         return false;
     }
     
+    private boolean isBarrelOnPlatform(BarrelView barrel) {
+        PlatformView platform;
+        double barrelboundingdiameter = barrel.getBoundingRadius()*2;
+        
+        
+        for(int i = 0; i < playareaview.getLevelView().getNumPlatforms(); i++) {
+            
+            platform = playareaview.getLevelView().getPlatformView(i);
+
+            if(barrel.getY() >= platform.getY() - barrelboundingdiameter &&
+                barrel.getY() <= platform.getY()+platform.getHeight() - barrelboundingdiameter) {
+                
+                if(barrel.getX() > platform.getX() && barrel.getX() < platform.getX()+platform.getWidth() ||
+                    barrel.getX()+barrelboundingdiameter > platform.getX() && barrel.getX()+barrelboundingdiameter < platform.getX()+platform.getWidth())
+                
+                return true;
+            }
+            
+        }
+        
+        return false;
+    }
     
-    
+    private boolean isBarrelOnFloor(BarrelView barrel) {
+        if( barrel.getY() + barrel.getBoundingRadius()*2 >= playareaview.getHeight()) {
+            return true;
+        }
+        return false;
+    }
     
         
 
