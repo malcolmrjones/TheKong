@@ -18,7 +18,8 @@ public class AnimationController extends AnimationTimer {
     public final double PLAYER_SPEED = 3.0;
     public final double GRAVITY = 4;
     public boolean isHeroJump;
-    private int frameCount;
+    public long frameCount;
+    public long jumpStartFrame;
     
     
     
@@ -42,6 +43,7 @@ public class AnimationController extends AnimationTimer {
         handleJump();
         
         playareaview.moveSprites();
+        frameCount += 1;
         
     }
     
@@ -102,20 +104,14 @@ public class AnimationController extends AnimationTimer {
     }
     
     private void handleJump() {
-
         if(isHeroJump) {
-            if(frameCount < 10) {
+            if((frameCount - jumpStartFrame) < 10) {
                 hero.setY(hero.getY() - GRAVITY * 2.5);
             }
             else {
                 isHeroJump = false;
-                frameCount = 0;
             }
-            frameCount++;
         }
-        
-        
-        
     }
     
     private void handleLadderClimb() {

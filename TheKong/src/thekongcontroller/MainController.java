@@ -87,6 +87,7 @@ public class MainController extends Application {
                     if((animate.isHeroOnFloor(playareaview) || animate.isHeroOnPlatform(playareaview)) &&
                             !animate.isHeroOnLadder(playareaview)) {
                             animate.isHeroJump = true;
+                            animate.jumpStartFrame = animate.frameCount;
                     }
                     
                 }
