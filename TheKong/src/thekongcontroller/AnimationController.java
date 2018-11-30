@@ -36,7 +36,6 @@ public class AnimationController extends AnimationTimer {
         
         handleHeroOutOfBounds();
         handleGravity();
-        handleHeroOnFloor();
         handleHeroBelowPlatform();
         handleLadderClimb();
         handleJump();
@@ -59,13 +58,6 @@ public class AnimationController extends AnimationTimer {
             hero.setX(playareaview.getWidth() - hero.getBoundingRadius() * 2);
         }
     }
-    
-    private void handleHeroOnFloor() {
-        if(isHeroOnFloor(playareaview)) {
-            hero.setY(playareaview.getHeight() - hero.getBoundingRadius()*2);
-        }
-        
-     }
     
     private void handleHeroBelowPlatform() {
         PlatformView platform;
