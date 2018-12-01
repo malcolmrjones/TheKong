@@ -131,11 +131,13 @@ public class AnimationController extends AnimationTimer {
         
     }
     
+    
     private void handleBarrels() {
         
-        //Random (int)(Math.random() * (60 - 30) + 30)
+        //(int)(Math.random() * ((900 - 100) + 1)) + 100
+        
         /* CREATE NEW BARRELS */
-        if((frameCount - barrelStartFrame) > (int)(Math.random() * (250 - 75) + 75)) {
+        if((frameCount - barrelStartFrame) >= 100) {
            
             BarrelView barrel = new BarrelView(playareaview.getBarrelData());
             barrel.setDirection(0);
@@ -259,15 +261,18 @@ public class AnimationController extends AnimationTimer {
                 hero.getY() <= platform.getY()+platform.getHeight() - playerboundingdiameter) {
                 
                 if(hero.getX() > platform.getX() && hero.getX() < platform.getX()+platform.getWidth() ||
-                    hero.getX()+playerboundingdiameter > platform.getX() && hero.getX()+playerboundingdiameter < platform.getX()+platform.getWidth())
+                    hero.getX()+playerboundingdiameter > platform.getX() && hero.getX()+playerboundingdiameter < platform.getX()+platform.getWidth()) {
+                    return true;
+                }
                 
-                return true;
+                
             }
             
         }
         
         return false;
     }
+    
     
     private boolean isBarrelOnPlatform(BarrelView barrel) {
         PlatformView platform;

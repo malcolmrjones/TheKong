@@ -3,6 +3,7 @@ package thekongcontroller;
 import com.sun.javafx.css.Combinator;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -76,6 +77,7 @@ public class MainController extends Application {
                 if(event.getCode() == KeyCode.LEFT) {
                     hero.setDirection(180.0);
                     hero.setSpeed(animate.PLAYER_SPEED);
+                    hero.setViewport(hero.getFacingLeftViewPort());
                 }
                 
                 if(event.getCode() == KeyCode.UP) {
