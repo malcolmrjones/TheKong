@@ -2,6 +2,7 @@ package thekongcontroller;
 
 import com.sun.javafx.css.Combinator;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -49,8 +50,22 @@ public class MainController extends Application {
         CommandView commandview = new CommandView();
         
         AnimationController animate = new AnimationController(playareaview);
-        animate.start();
-
+        
+        commandview.getStartButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                animate.start();
+            }
+        
+        });
+        
+        commandview.getExitButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        
+        });
 
         
         GameView root = new GameView(statusview, commandview, playareaview);
@@ -77,7 +92,6 @@ public class MainController extends Application {
                 if(event.getCode() == KeyCode.LEFT) {
                     hero.setDirection(180.0);
                     hero.setSpeed(animate.PLAYER_SPEED);
-                    hero.setViewport(hero.getFacingLeftViewPort());
                 }
                 
                 if(event.getCode() == KeyCode.UP) {
